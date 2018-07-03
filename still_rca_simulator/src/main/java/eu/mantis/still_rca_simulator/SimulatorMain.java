@@ -1,5 +1,7 @@
 package eu.mantis.still_rca_simulator;
 
+import static java.util.stream.Collectors.groupingBy;
+
 import com.microsoft.azure.sdk.iot.device.DeviceClient;
 import com.microsoft.azure.sdk.iot.device.IotHubClientProtocol;
 import com.microsoft.azure.sdk.iot.device.Message;
@@ -12,12 +14,16 @@ import java.io.Reader;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.ServiceConfigurationError;
+import java.util.TreeMap;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -28,9 +34,11 @@ public class SimulatorMain {
   private static final List<TruckError> truckErrors = new ArrayList<>();
   private static final String connectionString = getProp().getProperty("connection_string");
   private static final IotHubClientProtocol protocol = IotHubClientProtocol.AMQPS;
+  private static final List<TruckErrorForCloud> toCloud = new ArrayList<>();
 
   public static void main(String[] args) {
     readTruckErrorsFromfile();
+    aggregateTruckErrors();
     sendErrorsToHub();
     System.out.println("done");
   }
@@ -54,6 +62,14 @@ public class SimulatorMain {
     }
   }
 
+  private static void aggregateTruckErrors() {
+    Map<LocalDate, List<TruckError>> aggregation = truckErrors.stream().collect(groupingBy(error -> error.getErrorTimeStamp().toLocalDate()));
+    TreeMap<LocalDate, List<TruckError>> ordered = new TreeMap<>(aggregation);
+    for (Entry<LocalDate, List<TruckError>> entry : ordered.entrySet()) {
+      toCloud.add(new TruckErrorForCloud("517311D00113", entry.getKey().atStartOfDay().toString(), entry.getValue().size()));
+    }
+  }
+
   private static void sendErrorsToHub() {
     DeviceClient client;
     try {
@@ -66,19 +82,14 @@ public class SimulatorMain {
     long time = 2400;
     client.setOption("SetSASTokenExpiryTime", time);
 
-    int i = 0;
+    System.out.println("IoT hub connection open, sending data now...");
     try {
-      for (TruckError error : truckErrors) {
-        i++;
+      for (TruckErrorForCloud error : toCloud) {
         String strMessage = Utility.toPrettyJson(null, error);
         if (strMessage != null) {
           Message msg = new Message(strMessage);
           msg.setMessageId(java.util.UUID.randomUUID().toString());
           client.sendEventAsync(msg, null, null);
-        }
-
-        if ((truckErrors.size() - i) % 10 == 0) {
-          System.out.println(truckErrors.size() - i + " messages are in queue for sending it to the IoT hub.");
         }
       }
 
@@ -90,7 +101,7 @@ public class SimulatorMain {
     }
   }
 
-  public static Properties getProp() {
+  private static Properties getProp() {
     Properties prop = new Properties();
     try {
       File file = new File("app.properties");
