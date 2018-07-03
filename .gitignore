@@ -1,0 +1,12 @@
+# Created by .ignore support plugin (hsz.mobi)
+*/.idea/
+*.properties
+*/target
+*.log
+*.gz
+*/.mvn
+*.iml
+*.csv
+*.xlsx
+/.idea/
+/still_rca_azure_function/src/main/java/eu/mantis/misc/BasicAuthProvider.java
