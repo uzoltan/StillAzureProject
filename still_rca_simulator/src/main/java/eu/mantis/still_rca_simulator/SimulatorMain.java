@@ -6,6 +6,8 @@ import com.microsoft.azure.sdk.iot.device.DeviceClient;
 import com.microsoft.azure.sdk.iot.device.IotHubClientProtocol;
 import com.microsoft.azure.sdk.iot.device.Message;
 import eu.mantis.still_rca_simulator.misc.Utility;
+import eu.mantis.still_rca_simulator.model.TruckError;
+import eu.mantis.still_rca_simulator.model.TruckErrorForCloud;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

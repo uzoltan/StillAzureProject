@@ -1,4 +1,4 @@
-package eu.mantis.still_rca_simulator;
+package eu.mantis.still_rca_simulator.model;
 
 public class TruckErrorForCloud {
 
