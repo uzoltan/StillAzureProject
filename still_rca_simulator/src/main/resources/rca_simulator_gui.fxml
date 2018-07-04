@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -14,44 +16,44 @@
 <GridPane hgap="14.0" maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="20.0"
   xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eu.mantis.still_rca_simulator.gui.GuiController">
   <children>
-    <ImageView fx:id="logo" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0"
-      GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="TOP">
+    <ImageView fx:id="logo" fitHeight="52.5" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0"
+      GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
       <image>
-        <!-- place holder -->
+        <Image url="@still.png"/>
       </image>
     </ImageView>
     <VBox maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" prefWidth="400.0" spacing="7.0" GridPane.columnIndex="1"
       GridPane.rowIndex="0">
       <children>
-        <Label fx:id="messageLabel" text="Sending in error codes..." textAlignment="LEFT" wrapText="true">
+        <Label fx:id="mainLabel" text="Start the simulation with the button" textAlignment="LEFT" wrapText="true">
           <font>
-            <Font name="System Bold" size="14.0"/>
+            <Font name="System Bold" size="16.0"/>
           </font>
         </Label>
         <HBox>
           <children>
-            <Label fx:id="detailsLabel" text="Date: " textAlignment="LEFT" wrapText="true">
+            <Label fx:id="dateText" text="Date: " textAlignment="LEFT" wrapText="true">
               <font>
-                <Font size="13.0"/>
+                <Font size="15.0"/>
               </font>
             </Label>
-            <Label text="placeholder">
+            <Label fx:id="dateValue" text="n/a">
               <font>
-                <Font size="13.0"/>
+                <Font size="15.0"/>
               </font>
             </Label>
           </children>
         </HBox>
         <HBox>
           <children>
-            <Label text="Error code count: ">
+            <Label fx:id="countText" text="Error code count: ">
               <font>
-                <Font size="13.0"/>
+                <Font size="15.0"/>
               </font>
             </Label>
-            <Label text="placeholder">
+            <Label fx:id="countValue" text="n/a">
               <font>
-                <Font size="13.0"/>
+                <Font size="15.0"/>
               </font>
             </Label>
           </children>
@@ -60,14 +62,18 @@
     </VBox>
     <HBox maxHeight="-Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="1">
       <children>
+        <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.0" visible="false">
+          <padding>
+            <Insets top="10.0"/>
+          </padding>
+        </ProgressBar>
         <Pane maxWidth="+Infinity" HBox.hgrow="ALWAYS"/>
-        <Button fx:id="continueButton" cancelButton="true" minWidth="80.0" mnemonicParsing="false" onAction="#continueSendingData" text="Continue"
-          visible="false" HBox.hgrow="NEVER">
+        <Button fx:id="continueButton" minWidth="80.0" mnemonicParsing="false" onAction="#sendData" text="Start" visible="true" HBox.hgrow="NEVER">
           <HBox.margin>
             <Insets/>
           </HBox.margin>
           <font>
-            <Font name="System Bold" size="15.0"/>
+            <Font name="System Bold" size="17.0"/>
           </font>
         </Button>
       </children>

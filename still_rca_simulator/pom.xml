@@ -101,7 +101,7 @@
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>eu.arrowhead.core.ArrowheadMain</mainClass>
+                  <mainClass>eu.mantis.still_rca_simulator.SimulatorMain</mainClass>
                 </transformer>
               </transformers>
             </configuration>
