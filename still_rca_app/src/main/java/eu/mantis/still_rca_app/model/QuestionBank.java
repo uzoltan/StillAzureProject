@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "question_bank")
-public class QuestionBank {
+public class QuestionBank implements Comparable<QuestionBank> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +36,8 @@ public class QuestionBank {
   private String answer3;
   @Size(max = 512)
   private String answer4;
+  @Column(nullable = false)
+  private int priority;
 
   @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "questions")
   @JsonIgnoreProperties("questions")
@@ -44,12 +47,13 @@ public class QuestionBank {
   }
 
   public QuestionBank(@NotNull @Size(max = 512) String question, @NotNull @Size(max = 512) String answer1, @NotNull @Size(max = 512) String answer2,
-                      @Size(max = 512) String answer3, @Size(max = 512) String answer4, List<FailureMode> failureModes) {
+                      @Size(max = 512) String answer3, @Size(max = 512) String answer4, int priority, List<FailureMode> failureModes) {
     this.question = question;
     this.answer1 = answer1;
     this.answer2 = answer2;
     this.answer3 = answer3;
     this.answer4 = answer4;
+    this.priority = priority;
     this.failureModes = failureModes;
   }
 
@@ -101,12 +105,33 @@ public class QuestionBank {
     this.answer4 = answer4;
   }
 
+  public int getPriority() {
+    return priority;
+  }
+
+  public void setPriority(int priority) {
+    this.priority = priority;
+  }
+
   public List<FailureMode> getFailureModes() {
     return failureModes;
   }
 
   public void setFailureModes(List<FailureMode> failureModes) {
     this.failureModes = failureModes;
+  }
+
+
+  @Override
+  public int compareTo(QuestionBank o) {
+    if(this.priority == 0){
+      if(o.priority == 0){
+        return 0;
+      } else {
+        return 1;
+      }
+    }
+    return this.priority - o.priority;
   }
 
 }

@@ -49,7 +49,7 @@ public class Function {
       timestamp = LocalDateTime.now();
     }
 
-    FailureMode failureMode = new FailureMode("CAN bus failure", null);
+    FailureMode failureMode = new FailureMode("A3979 - CAN bus failure", null);
     FaultPrediction prediction = new FaultPrediction(truckError.getTruckSerial(), truckError.getErrorTimeStamp(), timestamp.plusDays(5).toString(),
                                                      failureMode, 4, 0.8);
 

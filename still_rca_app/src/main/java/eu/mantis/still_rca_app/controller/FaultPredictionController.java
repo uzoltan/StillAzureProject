@@ -4,6 +4,7 @@ import eu.mantis.still_rca_app.exception.BadRequetException;
 import eu.mantis.still_rca_app.exception.ResourceNotFoundException;
 import eu.mantis.still_rca_app.model.FailureMode;
 import eu.mantis.still_rca_app.model.FaultPrediction;
+import eu.mantis.still_rca_app.model.PredictionStatus;
 import eu.mantis.still_rca_app.model.QuestionBank;
 import eu.mantis.still_rca_app.model.TechnicianAssessment;
 import eu.mantis.still_rca_app.model.VerificationResult;
@@ -64,29 +65,24 @@ public class FaultPredictionController {
 
   @GetMapping("predictions/{truckSerial}")
   public List<FaultPrediction> getPredictionsByTruckSerial(@PathVariable String truckSerial,
-                                                           @RequestParam(value = "verified", required = false) Boolean verified,
-                                                           @RequestParam(value = "evaluated", required = false) Boolean evaluated) {
-    if (verified == null) {
-      if (evaluated != null) {
-        if (evaluated) {
-          return predictionRepo.findByTruckSerialAndTechAssessmentIsNotNull(truckSerial);
-        } else {
-          return predictionRepo.findByTruckSerialAndTechAssessmentIsNull(truckSerial);
-        }
-      } else {
-        return predictionRepo.findByTruckSerial(truckSerial);
-      }
-    } else {
-      if (evaluated != null) {
-        if (evaluated) {
-          return predictionRepo.findByTruckSerialAndVerifiedAndTechAssessmentIsNotNull(truckSerial, verified);
-        } else {
-          return predictionRepo.findByTruckSerialAndVerifiedAndTechAssessmentIsNull(truckSerial, verified);
-        }
-      } else {
-        return predictionRepo.findByTruckSerialAndVerified(truckSerial, verified);
+                                                           @RequestParam(value = "status", required = false) String status) {
+    status = status.toUpperCase();
+    PredictionStatus[] statuses = PredictionStatus.values();
+    boolean statusHasMatch = false;
+    for (PredictionStatus statuse : statuses) {
+      if (statuse.toString().equals(status)) {
+        statusHasMatch = true;
       }
     }
+    if(!statusHasMatch){
+      throw new BadRequetException("Valid values for the status parameter: new, answered, verified, overruled");
+    }
+
+    List<FaultPrediction> predictions = predictionRepo.findByTruckSerialAndPredictionStatus(truckSerial, PredictionStatus.valueOf(status));
+    for(FaultPrediction prediction : predictions){
+      Collections.sort(prediction.getFailureMode().getQuestions());
+    }
+    return predictions;
   }
 
   @PostMapping("predictions")
@@ -99,6 +95,7 @@ public class FaultPredictionController {
 
     //Save the FaultPrediction
     prediction.setFailureMode(failure);
+    prediction.setPredictionStatus(PredictionStatus.NEW);
     prediction = predictionRepo.saveAndFlush(prediction);
     //Get the questions belonging to the failure mode
     List<QuestionBank> questions = questionRepo.findByFailureModes(Collections.singleton(failure));
@@ -118,8 +115,8 @@ public class FaultPredictionController {
   public FaultPrediction saveVerificationAnswers(@PathVariable Long id, @Valid @RequestBody List<VerificationResult> verificationResults) {
     FaultPrediction prediction = predictionRepo.findById(id).orElseThrow(
         () -> new ResourceNotFoundException("Fault prediction resource with id " + id + " not found"));
-    if (prediction.getVerified()) {
-      throw new BadRequetException("This fault prediction is already verified! (All questions have been answered)");
+    if (!prediction.getPredictionStatus().equals(PredictionStatus.NEW)) {
+      throw new BadRequetException("The questions for this fault prediction have been answered already!");
     }
 
     List<VerificationStep> steps = verificationRepo.findByFaultPredictionAndAnswerIsNull(prediction);
@@ -136,7 +133,7 @@ public class FaultPredictionController {
     //Here is the place for some logic to evaluate the answers, and maybe update the fault prediction properties based on them
 
     if (VerificationStep.allQuestionsAnswered(steps)) {
-      prediction.setVerified(true);
+      prediction.setPredictionStatus(PredictionStatus.ANSWERED);
       prediction = updateFailureModeFromAnswers(prediction, steps);
       return predictionRepo.save(prediction);
     } else {
@@ -158,6 +155,9 @@ public class FaultPredictionController {
   public TechnicianAssessment saveTechnicalAssessment(@PathVariable Long id, @Valid @RequestBody TechnicianAssessment assessment) {
     FaultPrediction prediction = predictionRepo.findById(id).orElseThrow(
         () -> new ResourceNotFoundException("Fault prediction resource with id " + id + " not found"));
+
+    prediction.setPredictionStatus(checkTechAssessment(prediction.getFailureMode(), assessment));
+    predictionRepo.save(prediction);
     assessment.setFaultPrediction(prediction);
     return assessmentRepository.save(assessment);
   }
@@ -165,7 +165,7 @@ public class FaultPredictionController {
   //Some hardcoded stuff for now
   private FaultPrediction updateFailureModeFromAnswers(FaultPrediction prediction, List<VerificationStep> steps) {
     boolean shouldUpdate = true;
-    if (prediction.getFailureMode().getFailureName().equalsIgnoreCase("CAN bus failure")) {
+    if (prediction.getFailureMode().getFailureName().equalsIgnoreCase("A3979 - CAN bus failure")) {
       for (VerificationStep step : steps) {
         String answer = step.getAnswer();
         switch (step.getQuestion().getQuestion()) {
@@ -195,12 +195,31 @@ public class FaultPredictionController {
       }
 
       if (shouldUpdate) {
-        FailureMode failureMode = failureRepo.findByFailureNameIgnoreCase("Battery failure")
-                                             .orElseGet(() -> failureRepo.save(new FailureMode("Battery failure", null)));
+        FailureMode failureMode = failureRepo.findByFailureNameIgnoreCase("A5611 - Battery failure")
+                                             .orElseGet(() -> failureRepo.save(new FailureMode("A5611 - Battery failure", null)));
         prediction.setFailureMode(failureMode);
       }
     }
     return prediction;
+  }
+
+  private PredictionStatus checkTechAssessment(FailureMode failureMode, TechnicianAssessment assessment){
+    if(failureMode.getFailureName().equalsIgnoreCase("A3979 - CAN bus failure")){
+      if(assessment.getRootCause().equalsIgnoreCase("A3979 - DFÜ (remote data transfer) communication error")){
+        return PredictionStatus.VERIFIED;
+      } else {
+        return PredictionStatus.OVERRULED;
+      }
+    }
+    if(failureMode.getFailureName().equalsIgnoreCase("A5611 - Battery failure")){
+      if(assessment.getRootCause().equalsIgnoreCase("A5611 - Battery fault")){
+        return PredictionStatus.VERIFIED;
+      } else {
+        return PredictionStatus.OVERRULED;
+      }
+    }
+
+    return PredictionStatus.VERIFIED;
   }
 
 }
