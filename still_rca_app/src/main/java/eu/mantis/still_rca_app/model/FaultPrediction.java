@@ -14,11 +14,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "fault_predictions")
-@JsonIgnoreProperties(value = {"verified", "techAssessment"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"status", "techAssessment"}, allowGetters = true)
 public class FaultPrediction {
 
   @Id
@@ -28,20 +27,17 @@ public class FaultPrediction {
   private String truckSerial;
   private LocalDateTime predictionTime;
   private LocalDateTime predictedTime;
+  private PredictionStatus predictionStatus;
 
   @OneToOne(fetch = FetchType.LAZY)
   @NotNull
   @JoinColumn(name = "failure_mode_id", nullable = false)
   private FailureMode failureMode;
 
-
   private Integer failureSeverity;
   @Min(0)
   @Max(1)
   private Double failureProbability;
-
-  @Type(type = "yes_no")
-  private Boolean verified = false;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "faultPrediction")
   @JsonIgnoreProperties("faultPrediction")
@@ -50,15 +46,16 @@ public class FaultPrediction {
   public FaultPrediction() {
   }
 
-  public FaultPrediction(String truckSerial, LocalDateTime predictionTime, LocalDateTime predictedTime, FailureMode failureMode,
-                         Integer failureSeverity, Double failureProbability, Boolean verified, TechnicianAssessment techAssessment) {
+  public FaultPrediction(@NotNull String truckSerial, LocalDateTime predictionTime, LocalDateTime predictedTime, PredictionStatus predictionStatus,
+                         @NotNull FailureMode failureMode, Integer failureSeverity, @Min(0) @Max(1) Double failureProbability,
+                         TechnicianAssessment techAssessment) {
     this.truckSerial = truckSerial;
     this.predictionTime = predictionTime;
     this.predictedTime = predictedTime;
+    this.predictionStatus = predictionStatus;
     this.failureMode = failureMode;
     this.failureSeverity = failureSeverity;
     this.failureProbability = failureProbability;
-    this.verified = verified;
     this.techAssessment = techAssessment;
   }
 
@@ -94,6 +91,14 @@ public class FaultPrediction {
     this.predictedTime = predictedTime;
   }
 
+  public PredictionStatus getPredictionStatus() {
+    return predictionStatus;
+  }
+
+  public void setPredictionStatus(PredictionStatus predictionStatus) {
+    this.predictionStatus = predictionStatus;
+  }
+
   public FailureMode getFailureMode() {
     return failureMode;
   }
@@ -116,14 +121,6 @@ public class FaultPrediction {
 
   public void setFailureProbability(Double failureProbability) {
     this.failureProbability = failureProbability;
-  }
-
-  public Boolean getVerified() {
-    return verified;
-  }
-
-  public void setVerified(Boolean verified) {
-    this.verified = verified;
   }
 
   public TechnicianAssessment getTechAssessment() {
