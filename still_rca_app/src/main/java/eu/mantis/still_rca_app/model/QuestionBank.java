@@ -1,6 +1,9 @@
 package eu.mantis.still_rca_app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -17,7 +20,6 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "question_bank")
-@JsonIgnoreProperties(value = {"priority"}, allowSetters = true)
 public class QuestionBank implements Comparable<QuestionBank> {
 
   @Id
@@ -38,6 +40,7 @@ public class QuestionBank implements Comparable<QuestionBank> {
   @Size(max = 512)
   private String answer4;
   @Column(nullable = false)
+  @JsonProperty(access = Access.WRITE_ONLY)
   private int priority;
 
   @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "questions")
