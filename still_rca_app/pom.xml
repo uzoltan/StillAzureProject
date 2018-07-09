@@ -6,7 +6,7 @@
   <groupId>eu.mantis</groupId>
   <artifactId>still_rca_app</artifactId>
   <version>0.1</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
 
   <name>still_rca_app</name>
 
@@ -70,10 +70,10 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
 
-      <plugin>
+      <!--<plugin>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-webapp-maven-plugin</artifactId>
-        <!-- Check latest version on Maven Central -->
+        &lt;!&ndash; Check latest version on Maven Central &ndash;&gt;
         <version>1.2.0</version>
         <configuration>
           <resourceGroup>AITIA</resourceGroup>
@@ -82,7 +82,7 @@
           <javaVersion>1.8</javaVersion>
           <deploymentType>war</deploymentType>
         </configuration>
-      </plugin>
+      </plugin>-->
     </plugins>
   </build>
 
