@@ -17,6 +17,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "question_bank")
+@JsonIgnoreProperties(value = {"priority"}, allowSetters = true)
 public class QuestionBank implements Comparable<QuestionBank> {
 
   @Id
