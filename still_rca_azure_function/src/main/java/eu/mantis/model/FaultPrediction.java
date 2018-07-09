@@ -9,7 +9,7 @@ public class FaultPrediction {
   private FailureMode failureMode;
   private Integer failureSeverity;
   private Double failureProbability;
-  private Boolean verified = false;
+  private PredictionStatus predictionStatus;
 
   public FaultPrediction() {
   }
@@ -80,11 +80,11 @@ public class FaultPrediction {
     this.failureProbability = failureProbability;
   }
 
-  public Boolean getVerified() {
-    return verified;
+  public PredictionStatus getPredictionStatus() {
+    return predictionStatus;
   }
 
-  public void setVerified(Boolean verified) {
-    this.verified = verified;
+  public void setPredictionStatus(PredictionStatus predictionStatus) {
+    this.predictionStatus = predictionStatus;
   }
 }
