@@ -27,6 +27,7 @@ public class FaultPrediction {
   private String truckSerial;
   private LocalDateTime predictionTime;
   private LocalDateTime predictedTime;
+  //@Enumerated(EnumType.STRING)
   private PredictionStatus predictionStatus;
 
   @OneToOne(fetch = FetchType.LAZY)
