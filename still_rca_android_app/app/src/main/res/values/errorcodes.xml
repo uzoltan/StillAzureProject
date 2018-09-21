@@ -1,0 +1,28 @@
+<resources>
+  <string-array name="error_codes">
+    <item>A2652 - Modem transmission timeout</item>
+    <item>A2653 - Communication server not available</item>
+    <item>A2914 - Internal process error</item>
+    <item>A3003 - Accelerator breakdown</item>
+    <item>A3005 - Accelerator breakdown</item>
+    <item>A3008 - Accelerator error</item>
+    <item>A3020 - Drive direction switch error</item>
+    <item>A3035 - Brake fluid switch error</item>
+    <item>A3180 - Internal process error in fingertip</item>
+    <item>A3181 - Internal process error in fingertip</item>
+    <item>A3907 - FU1 login error</item>
+    <item>A3909 - FU1 communication error</item>
+    <item>A3929 - FIT communication error</item>
+    <item>A3967 - Card reader login error</item>
+    <item>A3969 - Card reader communication error</item>
+    <item>A3972 - Acceleration sensor login error</item>
+    <item>A3977 - DFÜ login error (remote data transfer)</item>
+    <item>A3979 - DFÜ (remote data transfer) communication error</item>
+    <item>A4202 - MCU - SU compatibility error</item>
+    <item>A4207 - MCU - ABE compatibility error</item>
+    <item>A4227 - MCU - ABE compatibility error</item>
+    <item>A4232 - MCU - SU compatibility error</item>
+    <item>A6464 - Data loss in TDM priority memory</item>
+    <item>A5611 - Battery fault</item>
+  </string-array>
+</resources>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".FaultPredictionActivity">
+
+  <ImageView
+    android:id="@+id/imageView"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_alignParentTop="true"
+    android:layout_marginBottom="20dp"
+    android:layout_centerInParent="true"
+    app:srcCompat="@drawable/still"/>
+
+  <TextView
+    android:id="@+id/hintTextView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="@color/colorRed"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    android:layout_marginBottom="35dp"
+    android:gravity="center_horizontal"
+    android:layout_below="@id/imageView"
+    android:lines="2"
+    android:singleLine="false"
+    android:text="hint"/>
+
+
+  <RelativeLayout
+    android:id="@+id/questionLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/hintTextView"
+    android:layout_centerInParent="true">
+
+    <TextView
+      android:id="@+id/pleaseTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:layout_marginBottom="5dp"
+      android:text="@string/answer"/>
+
+    <TextView
+      android:id="@+id/questionNumberTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/pleaseTextView"
+      android:layout_alignParentEnd="true"
+      android:layout_marginEnd="30dp"
+      android:textColor="@color/colorBlack"
+      android:layout_marginBottom="10dp"
+      android:text="questions"/>
+
+
+    <TextView
+      android:id="@+id/questionTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center_horizontal"
+      android:layout_centerHorizontal="true"
+      android:layout_below="@id/questionNumberTextView"
+      android:textColor="@color/colorBlack"
+      android:textStyle="bold"
+      android:textSize="20sp"
+      android:text="-"/>
+
+    <Button
+      android:id="@+id/answerA"
+      android:layout_below="@id/questionTextView"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      android:layout_marginRight="20dp"
+      android:layout_marginLeft="20dp"
+      android:theme="@style/ButtonStyle"
+      android:text="answerA"/>
+
+    <Button
+      android:id="@+id/answerB"
+      android:layout_below="@id/answerA"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      android:layout_marginRight="20dp"
+      android:layout_marginLeft="20dp"
+      android:theme="@style/ButtonStyle"
+      android:text="answerB"/>
+
+    <Button
+      android:id="@+id/answerC"
+      android:layout_below="@id/answerB"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      android:layout_marginRight="20dp"
+      android:layout_marginLeft="20dp"
+      android:theme="@style/ButtonStyle"
+      android:text="answerC"/>
+
+    <Button
+      android:id="@+id/answerD"
+      android:layout_below="@id/answerC"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      android:layout_marginRight="20dp"
+      android:layout_marginLeft="20dp"
+      android:theme="@style/ButtonStyle"
+      android:text="answerD"/>
+  </RelativeLayout>
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/questionLayout">
+
+    <Button
+      android:id="@+id/sendTechnicalAssessment"
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:theme="@style/ButtonStyle"
+      android:layout_alignParentBottom="true"
+      android:gravity="center"
+      android:text="@string/send_technical_assesment"/>
+
+  </RelativeLayout>
+
+  <ProgressBar
+    android:id="@+id/progressBar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    />
+
+
+</RelativeLayout>

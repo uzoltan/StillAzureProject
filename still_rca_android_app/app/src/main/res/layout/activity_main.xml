@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clickable="true"
+  android:focusableInTouchMode="true"
+  android:focusable="true"
+  tools:context=".MainActivity">
+
+
+  <ImageView
+    android:id="@+id/imageView"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_alignParentTop="true"
+    android:layout_marginTop="10dp"
+    android:layout_centerInParent="true"
+    app:srcCompat="@drawable/still"/>
+
+  <TextView
+    android:id="@+id/equipmentTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="20dp"
+    android:text="@string/equipment"
+    android:layout_below="@id/imageView"/>
+
+  <EditText
+    android:id="@+id/editText"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:ems="10"
+    android:inputType="text"
+    android:layout_below="@id/equipmentTextView"
+    android:gravity="center"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp"/>
+
+
+  <RelativeLayout
+    android:id="@+id/buttonLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/editText"
+    android:gravity="center">
+
+    <Button
+      android:id="@+id/setButton"
+      android:layout_marginTop="20dp"
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_marginLeft="20dp"
+      android:layout_marginRight="20dp"
+      android:theme="@style/ButtonStyle"
+      android:text="@string/search"
+      />
+
+  </RelativeLayout>
+
+  <ProgressBar
+    android:id="@+id/progressBar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/buttonLayout"
+    android:layout_centerHorizontal="true"
+    />
+
+
+</RelativeLayout>

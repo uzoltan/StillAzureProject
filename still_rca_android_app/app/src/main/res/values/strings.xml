@@ -1,0 +1,18 @@
+<resources>
+  <string name="app_name">RCA</string>
+  <string name="serial">Truck Serial Number</string>
+  <string name="search">Search</string>
+  <string name="noprediction">No predictions received</string>
+  <string name="prediction_received"> prediction received</string>
+  <string name="send_technical_assesment">Send technical assessment</string>
+  <string name="rootCause">Root cause</string>
+  <string name="comments">Comments...</string>
+  <string name="send">Send</string>
+  <string name="success">Success</string>
+  <string name="thanks">Thanks for the contribution!</string>
+  <string name="equipment">Equipment number</string>
+  <string name="predected_failure">Predicted failure:</string>
+  <string name="prediction_update">Prediction has been updated to:</string>
+  <string name="answer">Please answer the following question(s):</string>
+  <string name="select_error">Please select the error code</string>
+</resources>

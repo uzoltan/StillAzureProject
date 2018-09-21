@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clickable="true"
+  android:focusableInTouchMode="true"
+  android:focusable="true"
+  tools:context=".TechnicalAssessmentActivity">
+
+  <TextView
+    android:id="@+id/title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:layout_marginBottom="15dp"
+    android:text="@string/send_technical_assesment"
+    android:textColor="@color/colorPrimary"
+    android:textSize="25sp"
+    android:textStyle="bold"
+    android:gravity="center_horizontal"/>
+
+  <TextView
+    android:id="@+id/pleaseTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/title"
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="20dp"
+    android:text="@string/select_error"/>
+
+
+  <!--    <EditText
+          android:id="@+id/rootCauseEditText"
+          android:layout_width="match_parent"
+          android:layout_height="50dp"
+          android:layout_below="@+id/title"
+          android:layout_alignParentTop="true"
+          android:layout_centerHorizontal="true"
+          android:layout_marginTop="60dp"
+          android:layout_marginRight="20dp"
+          android:layout_marginLeft="20dp"
+          android:hint="@string/rootCause"
+          android:ems="10"
+          android:inputType="textMultiLine" />
+
+
+      <EditText
+          android:id="@+id/commentsEditText"
+          android:layout_width="match_parent"
+          android:layout_height="120dp"
+          android:layout_marginRight="20dp"
+          android:layout_marginLeft="20dp"
+          android:hint="@string/comments"
+          android:layout_below="@+id/rootCauseEditText"/>-->
+
+  <Spinner
+    android:id="@+id/spinner"
+    android:layout_below="@+id/pleaseTextView"
+    android:layout_width="fill_parent"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_height="40dp"
+    android:drawSelectorOnTop="true"
+    android:entries="@array/error_codes"
+    />
+
+  <EditText
+    android:id="@+id/commentsEditText"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp"
+    android:hint="@string/comments"
+    android:layout_below="@+id/spinner"/>
+
+  <Button
+    android:id="@+id/sendButton"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginTop="30dp"
+    android:theme="@style/ButtonStyle"
+    android:layout_below="@id/commentsEditText"
+    android:text="@string/send"
+    />
+
+  <ProgressBar
+    android:id="@+id/progressBar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/sendButton"
+    android:layout_centerInParent="true"
+    />
+
+
+</RelativeLayout>
